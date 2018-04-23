@@ -17,7 +17,7 @@ class RegisterUserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstName', null, [
+            ->add('firstname', null, [
                 "label" => "Your first name"
             ])
             ->add('name', null, [
@@ -29,7 +29,7 @@ class RegisterUserType extends AbstractType
             ->add('email', EmailType::class, [
                 "label" => "Your Email"
             ])
-            ->add('licenceNumber', null, [
+            ->add('licencenumber', null, [
                 "label" => "Your Driving Licence Number"
             ])
             ->add('profilePicture', FileType::class, array('label' => 'Profile Picture'))
