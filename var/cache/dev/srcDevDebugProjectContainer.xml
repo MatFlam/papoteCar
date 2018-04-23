@@ -20,6 +20,7 @@
       <parameter key="WebProfilerBundle">Symfony\Bundle\WebProfilerBundle\WebProfilerBundle</parameter>
       <parameter key="MonologBundle">Symfony\Bundle\MonologBundle\MonologBundle</parameter>
       <parameter key="DebugBundle">Symfony\Bundle\DebugBundle\DebugBundle</parameter>
+      <parameter key="SwiftmailerBundle">Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle</parameter>
     </parameter>
     <parameter key="kernel.bundles_metadata" type="collection">
       <parameter key="FrameworkBundle" type="collection">
@@ -65,6 +66,10 @@
       <parameter key="DebugBundle" type="collection">
         <parameter key="path">/var/www/html/papoteCar/vendor/symfony/debug-bundle</parameter>
         <parameter key="namespace">Symfony\Bundle\DebugBundle</parameter>
+      </parameter>
+      <parameter key="SwiftmailerBundle" type="collection">
+        <parameter key="path">/var/www/html/papoteCar/vendor/symfony/swiftmailer-bundle</parameter>
+        <parameter key="namespace">Symfony\Bundle\SwiftmailerBundle</parameter>
       </parameter>
     </parameter>
     <parameter key="kernel.charset">UTF-8</parameter>
@@ -260,6 +265,27 @@
         </parameter>
       </parameter>
     </parameter>
+    <parameter key="swiftmailer.mailer.default.transport.name">smtp</parameter>
+    <parameter key="swiftmailer.mailer.default.transport.smtp.encryption">ssl</parameter>
+    <parameter key="swiftmailer.mailer.default.transport.smtp.port">465</parameter>
+    <parameter key="swiftmailer.mailer.default.transport.smtp.host">smtp.gmail.com</parameter>
+    <parameter key="swiftmailer.mailer.default.transport.smtp.username">dave.lopper0@gmail.com</parameter>
+    <parameter key="swiftmailer.mailer.default.transport.smtp.password">saucisson</parameter>
+    <parameter key="swiftmailer.mailer.default.transport.smtp.auth_mode">login</parameter>
+    <parameter key="swiftmailer.mailer.default.transport.smtp.timeout">30</parameter>
+    <parameter key="swiftmailer.mailer.default.transport.smtp.source_ip">null</parameter>
+    <parameter key="swiftmailer.mailer.default.transport.smtp.local_domain">null</parameter>
+    <parameter key="swiftmailer.mailer.default.spool.enabled">false</parameter>
+    <parameter key="swiftmailer.mailer.default.plugin.impersonate">null</parameter>
+    <parameter key="swiftmailer.mailer.default.single_address">null</parameter>
+    <parameter key="swiftmailer.mailer.default.delivery.enabled">true</parameter>
+    <parameter key="swiftmailer.spool.enabled">false</parameter>
+    <parameter key="swiftmailer.delivery.enabled">true</parameter>
+    <parameter key="swiftmailer.single_address">null</parameter>
+    <parameter key="swiftmailer.mailers" type="collection">
+      <parameter key="default">swiftmailer.mailer.default</parameter>
+    </parameter>
+    <parameter key="swiftmailer.default_mailer">default</parameter>
     <parameter key="data_collector.templates" type="collection">
       <parameter key="data_collector.request" type="collection">
         <parameter>request</parameter>
@@ -320,6 +346,10 @@
       <parameter key="data_collector.doctrine" type="collection">
         <parameter>db</parameter>
         <parameter>@Doctrine/Collector/db.html.twig</parameter>
+      </parameter>
+      <parameter key="swiftmailer.data_collector" type="collection">
+        <parameter>swiftmailer</parameter>
+        <parameter>@Swiftmailer/Collector/swiftmailer.html.twig</parameter>
       </parameter>
       <parameter key="data_collector.dump" type="collection">
         <parameter>dump</parameter>
@@ -406,7 +436,7 @@
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver" public="false">
       <tag name="controller.argument_value_resolver" priority="-50"/>
-      <argument type="service" id="service_locator._nBE81K"/>
+      <argument type="service" id="service_locator.rYL2uPi"/>
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver" public="false">
       <tag name="controller.argument_value_resolver" priority="-100"/>
@@ -1561,6 +1591,9 @@
         <argument type="service" id="data_collector.doctrine"/>
       </call>
       <call method="add">
+        <argument type="service" id="swiftmailer.data_collector"/>
+      </call>
+      <call method="add">
         <argument type="service" id="data_collector.dump"/>
       </call>
       <call method="add">
@@ -1875,14 +1908,6 @@
         <argument>2048</argument>
       </call>
       <call method="addListener">
-        <argument>console.command</argument>
-        <argument type="collection">
-          <argument type="service" id="debug.debug_handlers_listener"/>
-          <argument>configure</argument>
-        </argument>
-        <argument>2048</argument>
-      </call>
-      <call method="addListener">
         <argument>kernel.request</argument>
         <argument type="collection">
           <argument type="service" id="router_listener"/>
@@ -2041,6 +2066,38 @@
           <argument>configure</argument>
         </argument>
         <argument>1024</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.exception</argument>
+        <argument type="collection">
+          <argument type="service" id="swiftmailer.email_sender.listener"/>
+          <argument>onException</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.terminate</argument>
+        <argument type="collection">
+          <argument type="service" id="swiftmailer.email_sender.listener"/>
+          <argument>onTerminate</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>console.error</argument>
+        <argument type="collection">
+          <argument type="service" id="swiftmailer.email_sender.listener"/>
+          <argument>onException</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>console.terminate</argument>
+        <argument type="collection">
+          <argument type="service" id="swiftmailer.email_sender.listener"/>
+          <argument>onTerminate</argument>
+        </argument>
+        <argument>0</argument>
       </call>
     </service>
     <service id="debug.controller_resolver" class="Symfony\Component\HttpKernel\Controller\TraceableControllerResolver" public="false">
@@ -2558,6 +2615,14 @@
       <call method="addPath">
         <argument>/var/www/html/papoteCar/vendor/symfony/debug-bundle/Resources/views</argument>
         <argument>!Debug</argument>
+      </call>
+      <call method="addPath">
+        <argument>/var/www/html/papoteCar/vendor/symfony/swiftmailer-bundle/Resources/views</argument>
+        <argument>Swiftmailer</argument>
+      </call>
+      <call method="addPath">
+        <argument>/var/www/html/papoteCar/vendor/symfony/swiftmailer-bundle/Resources/views</argument>
+        <argument>!Swiftmailer</argument>
       </call>
       <call method="addPath">
         <argument>/var/www/html/papoteCar/templates</argument>
@@ -3861,6 +3926,124 @@
         </argument>
       </call>
     </service>
+    <service id="4_Swift_Transport_Esmtp_Auth_NTLMAuthenticator~qHevZuc" class="Swift_Transport_Esmtp_Auth_NTLMAuthenticator" public="false"/>
+    <service id="3_Swift_Transport_Esmtp_Auth_PlainAuthenticator~qHevZuc" class="Swift_Transport_Esmtp_Auth_PlainAuthenticator" public="false"/>
+    <service id="2_Swift_Transport_Esmtp_Auth_LoginAuthenticator~qHevZuc" class="Swift_Transport_Esmtp_Auth_LoginAuthenticator" public="false"/>
+    <service id="1_Swift_Transport_Esmtp_Auth_CramMd5Authenticator~qHevZuc" class="Swift_Transport_Esmtp_Auth_CramMd5Authenticator" public="false"/>
+    <service id="swiftmailer.mailer.abstract" class="Swift_Mailer" public="true" abstract="true">
+      <argument type="service" id="swiftmailer.mailer.default.transport.smtp"/>
+    </service>
+    <service id="swiftmailer.transport.smtp.configurator.abstract" class="Symfony\Bundle\SwiftmailerBundle\DependencyInjection\SmtpTransportConfigurator" public="false" abstract="true"/>
+    <service id="swiftmailer.transport.sendmail.abstract" class="Swift_Transport_SendmailTransport" public="false" abstract="true"/>
+    <service id="swiftmailer.transport.null.abstract" class="Swift_Transport_NullTransport" public="false" abstract="true"/>
+    <service id="swiftmailer.transport.failover" class="Swift_Transport_FailoverTransport" public="false"/>
+    <service id="swiftmailer.transport.buffer.abstract" class="Swift_Transport_StreamBuffer" public="false" abstract="true">
+      <argument type="service" id="swiftmailer.transport.replacementfactory"/>
+    </service>
+    <service id="swiftmailer.transport.authhandler.abstract" class="Swift_Transport_Esmtp_AuthHandler" public="false" abstract="true">
+      <argument type="collection">
+        <argument type="service" id="1_Swift_Transport_Esmtp_Auth_CramMd5Authenticator~qHevZuc"/>
+        <argument type="service" id="2_Swift_Transport_Esmtp_Auth_LoginAuthenticator~qHevZuc"/>
+        <argument type="service" id="3_Swift_Transport_Esmtp_Auth_PlainAuthenticator~qHevZuc"/>
+        <argument type="service" id="4_Swift_Transport_Esmtp_Auth_NTLMAuthenticator~qHevZuc"/>
+      </argument>
+    </service>
+    <service id="swiftmailer.transport.eventdispatcher.abstract" class="Swift_Events_SimpleEventDispatcher" public="false" abstract="true"/>
+    <service id="swiftmailer.transport.replacementfactory" class="Swift_StreamFilters_StringReplacementFilterFactory" public="false"/>
+    <service id="swiftmailer.plugin.redirecting.abstract" class="Swift_Plugins_RedirectingPlugin" public="false" abstract="true"/>
+    <service id="swiftmailer.plugin.antiflood.abstract" class="Swift_Plugins_AntiFloodPlugin" public="false" abstract="true"/>
+    <service id="swiftmailer.plugin.impersonate.abstract" class="Swift_Plugins_ImpersonatePlugin" public="false" abstract="true"/>
+    <service id="swiftmailer.plugin.messagelogger.abstract" class="Swift_Plugins_MessageLogger" abstract="true"/>
+    <service id="swiftmailer.transport.smtp.abstract" class="Swift_Transport_EsmtpTransport" public="false" abstract="true"/>
+    <service id="swiftmailer.transport.spool.abstract" class="Swift_Transport_SpoolTransport" public="false" abstract="true"/>
+    <service id="swiftmailer.spool.file.abstract" class="Swift_FileSpool" public="false" abstract="true">
+      <argument>/var/www/html/papoteCar/src/../data/swiftmailer/spool</argument>
+    </service>
+    <service id="swiftmailer.spool.memory.abstract" class="Swift_MemorySpool" public="false" abstract="true"/>
+    <service id="swiftmailer.email_sender.listener" class="Symfony\Bundle\SwiftmailerBundle\EventListener\EmailSenderListener">
+      <tag name="kernel.event_subscriber"/>
+      <argument type="service" id="service_container"/>
+      <argument type="service" id="monolog.logger" on-invalid="null"/>
+    </service>
+    <service id="swiftmailer.data_collector" class="Symfony\Bundle\SwiftmailerBundle\DataCollector\MessageDataCollector" public="false">
+      <tag name="data_collector" template="@Swiftmailer/Collector/swiftmailer.html.twig" id="swiftmailer" priority="245"/>
+      <argument type="service" id="service_container"/>
+    </service>
+    <service id="swiftmailer.command.debug" class="Symfony\Bundle\SwiftmailerBundle\Command\DebugCommand">
+      <tag name="console.command" command="debug:swiftmailer"/>
+      <call method="setName">
+        <argument>debug:swiftmailer</argument>
+      </call>
+    </service>
+    <service id="swiftmailer.command.new_email" class="Symfony\Bundle\SwiftmailerBundle\Command\NewEmailCommand">
+      <tag name="console.command" command="swiftmailer:email:send"/>
+      <call method="setName">
+        <argument>swiftmailer:email:send</argument>
+      </call>
+    </service>
+    <service id="swiftmailer.command.send_email" class="Symfony\Bundle\SwiftmailerBundle\Command\SendEmailCommand">
+      <tag name="console.command" command="swiftmailer:spool:send"/>
+      <call method="setName">
+        <argument>swiftmailer:spool:send</argument>
+      </call>
+    </service>
+    <service id="swiftmailer.mailer.default.transport.eventdispatcher" class="Swift_Events_SimpleEventDispatcher" public="false"/>
+    <service id="swiftmailer.mailer.default.transport.authhandler" class="Swift_Transport_Esmtp_AuthHandler" public="false">
+      <argument type="collection">
+        <argument type="service" id="1_Swift_Transport_Esmtp_Auth_CramMd5Authenticator~qHevZuc"/>
+        <argument type="service" id="2_Swift_Transport_Esmtp_Auth_LoginAuthenticator~qHevZuc"/>
+        <argument type="service" id="3_Swift_Transport_Esmtp_Auth_PlainAuthenticator~qHevZuc"/>
+        <argument type="service" id="4_Swift_Transport_Esmtp_Auth_NTLMAuthenticator~qHevZuc"/>
+      </argument>
+      <call method="setUsername">
+        <argument>dave.lopper0@gmail.com</argument>
+      </call>
+      <call method="setPassword">
+        <argument>saucisson</argument>
+      </call>
+      <call method="setAuthMode">
+        <argument>login</argument>
+      </call>
+    </service>
+    <service id="swiftmailer.mailer.default.transport.buffer" class="Swift_Transport_StreamBuffer" public="false">
+      <argument type="service" id="swiftmailer.transport.replacementfactory"/>
+    </service>
+    <service id="swiftmailer.transport.configurator.default" class="Symfony\Bundle\SwiftmailerBundle\DependencyInjection\SmtpTransportConfigurator" public="false">
+      <argument>null</argument>
+      <argument type="service" id="router.request_context" on-invalid="null"/>
+    </service>
+    <service id="swiftmailer.mailer.default.transport.smtp" class="Swift_Transport_EsmtpTransport" public="false">
+      <argument type="service" id="swiftmailer.mailer.default.transport.buffer"/>
+      <argument type="collection">
+        <argument type="service" id="swiftmailer.mailer.default.transport.authhandler"/>
+      </argument>
+      <argument type="service" id="swiftmailer.mailer.default.transport.eventdispatcher"/>
+      <call method="setHost">
+        <argument>smtp.gmail.com</argument>
+      </call>
+      <call method="setPort">
+        <argument>465</argument>
+      </call>
+      <call method="setEncryption">
+        <argument>ssl</argument>
+      </call>
+      <call method="setTimeout">
+        <argument>30</argument>
+      </call>
+      <call method="setSourceIp">
+        <argument>null</argument>
+      </call>
+      <call method="registerPlugin">
+        <argument type="service" id="swiftmailer.mailer.default.plugin.messagelogger"/>
+      </call>
+      <configurator service="swiftmailer.transport.configurator.default" method="configure"/>
+    </service>
+    <service id="swiftmailer.mailer.default" class="Swift_Mailer" public="true">
+      <argument type="service" id="swiftmailer.mailer.default.transport.smtp"/>
+    </service>
+    <service id="swiftmailer.mailer.default.plugin.messagelogger" class="Swift_Plugins_MessageLogger" public="true">
+      <tag name="swiftmailer.default.plugin"/>
+    </service>
     <service id="instanceof.Symfony\Bundle\FrameworkBundle\Controller\Controller.0.App\Controller\DefaultController" class="App\Controller\DefaultController" public="false" autowire="true" abstract="true"/>
     <service id="abstract.instanceof.App\Controller\DefaultController" class="App\Controller\DefaultController" public="false" autowire="true" autoconfigure="true" abstract="true"/>
     <service id="instanceof.Symfony\Bundle\FrameworkBundle\Controller\Controller.0.App\Controller\UserController" class="App\Controller\UserController" public="false" autowire="true" abstract="true"/>
@@ -4003,11 +4186,18 @@
         <argument>make:migration</argument>
       </call>
     </service>
-    <service id="service_locator.IAFVU.1" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id="service_locator.P1xQlof" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="em" type="service" id="doctrine.orm.default_entity_manager" on-invalid="ignore"/>
         <argument key="encoder" type="service" id="security.user_password_encoder.generic" on-invalid="ignore"/>
+        <argument key="mailer" type="service" id="swiftmailer.mailer.default" on-invalid="ignore"/>
+      </argument>
+    </service>
+    <service id="service_locator.5KlkkM6" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="em" type="service" id="doctrine.orm.default_entity_manager" on-invalid="ignore"/>
       </argument>
     </service>
     <service id="service_locator.6UvSqJP" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
@@ -4016,17 +4206,19 @@
         <argument key="authenticationUtils" type="service" id="security.authentication_utils" on-invalid="ignore"/>
       </argument>
     </service>
-    <service id="service_locator._nBE81K" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id="service_locator.rYL2uPi" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\UserController:login" type="service" id="service_locator.6UvSqJP"/>
-        <argument key="App\Controller\UserController:registerUser" type="service" id="service_locator.IAFVU.1"/>
+        <argument key="App\Controller\UserController:registerUser" type="service" id="service_locator.P1xQlof"/>
+        <argument key="App\Controller\UserController:tokenCheck" type="service" id="service_locator.5KlkkM6"/>
         <argument key="App\Controller\UserController::login" type="service" id="service_locator.6UvSqJP"/>
-        <argument key="App\Controller\UserController::registerUser" type="service" id="service_locator.IAFVU.1"/>
+        <argument key="App\Controller\UserController::registerUser" type="service" id="service_locator.P1xQlof"/>
+        <argument key="App\Controller\UserController::tokenCheck" type="service" id="service_locator.5KlkkM6"/>
       </argument>
     </service>
     <service id="console.command_loader" class="Symfony\Component\Console\CommandLoader\ContainerCommandLoader" public="true">
-      <argument type="service" id="service_locator.p2Uz6BK"/>
+      <argument type="service" id="service_locator.ohqmJ6T"/>
       <argument type="collection">
         <argument key="about">console.command.about</argument>
         <argument key="assets:install">console.command.assets_install</argument>
@@ -4069,6 +4261,9 @@
         <argument key="doctrine:schema:update">doctrine.schema_update_command</argument>
         <argument key="doctrine:schema:validate">doctrine.schema_validate_command</argument>
         <argument key="security:encode-password">security.command.user_password_encoder</argument>
+        <argument key="debug:swiftmailer">swiftmailer.command.debug</argument>
+        <argument key="swiftmailer:email:send">swiftmailer.command.new_email</argument>
+        <argument key="swiftmailer:spool:send">swiftmailer.command.send_email</argument>
         <argument key="make:auth">maker.auto_command.make_auth</argument>
         <argument key="make:command">maker.auto_command.make_command</argument>
         <argument key="make:controller">maker.auto_command.make_controller</argument>
@@ -4086,7 +4281,7 @@
         <argument key="make:migration">maker.auto_command.make_migration</argument>
       </argument>
     </service>
-    <service id="service_locator.p2Uz6BK" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id="service_locator.ohqmJ6T" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="console.command.about" type="service" id="console.command.about"/>
@@ -4143,6 +4338,9 @@
         <argument key="maker.auto_command.make_validator" type="service" id="maker.auto_command.make_validator"/>
         <argument key="maker.auto_command.make_voter" type="service" id="maker.auto_command.make_voter"/>
         <argument key="security.command.user_password_encoder" type="service" id="security.command.user_password_encoder"/>
+        <argument key="swiftmailer.command.debug" type="service" id="swiftmailer.command.debug"/>
+        <argument key="swiftmailer.command.new_email" type="service" id="swiftmailer.command.new_email"/>
+        <argument key="swiftmailer.command.send_email" type="service" id="swiftmailer.command.send_email"/>
         <argument key="twig.command.debug" type="service" id="twig.command.debug"/>
         <argument key="twig.command.lint" type="service" id="twig.command.lint"/>
       </argument>
@@ -4502,6 +4700,13 @@
     <service id="Symfony\Component\Security\Core\User\UserCheckerInterface" alias="security.user_checker" public="false"/>
     <service id="logger" alias="monolog.logger"/>
     <service id="Psr\Log\LoggerInterface" alias="monolog.logger" public="false"/>
+    <service id="swiftmailer.mailer.default.transport" alias="swiftmailer.mailer.default.transport.smtp" public="true"/>
+    <service id="swiftmailer.plugin.messagelogger" alias="swiftmailer.mailer.default.plugin.messagelogger"/>
+    <service id="swiftmailer.mailer" alias="swiftmailer.mailer.default"/>
+    <service id="swiftmailer.transport" alias="swiftmailer.mailer.default.transport.smtp"/>
+    <service id="Swift_Mailer" alias="swiftmailer.mailer.default" public="false"/>
+    <service id="Swift_Transport" alias="swiftmailer.mailer.default.transport.smtp" public="false"/>
+    <service id="mailer" alias="swiftmailer.mailer.default" public="true"/>
     <service id="console.command.public_alias.doctrine_cache.contains_command" alias="doctrine_cache.contains_command" public="true"/>
     <service id="console.command.public_alias.doctrine_cache.delete_command" alias="doctrine_cache.delete_command" public="true"/>
     <service id="console.command.public_alias.doctrine_cache.flush_command" alias="doctrine_cache.flush_command" public="true"/>

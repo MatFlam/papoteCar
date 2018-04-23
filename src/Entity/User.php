@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -21,6 +22,9 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\Email(strict=true, message="Le format de l'email est incorrect")
+     * @Assert\Email(checkMX=true, message="Aucun serveur mail n'a été trouvé pour ce domaine")
      */
     private $email;
 
@@ -38,11 +42,6 @@ class User implements UserInterface
      * @ORM\Column(type="datetime")
      */
     private $datecreated;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $rating;
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
@@ -83,6 +82,11 @@ class User implements UserInterface
      * @ORM\Column(type="array")
      */
     private $roles;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $token;
 
 
 
@@ -142,18 +146,6 @@ class User implements UserInterface
     public function setDatecreated(\DateTimeInterface $datecreated): self
     {
         $this->datecreated = $datecreated;
-
-        return $this;
-    }
-
-    public function getRating(): ?int
-    {
-        return $this->rating;
-    }
-
-    public function setRating(?int $rating): self
-    {
-        $this->rating = $rating;
 
         return $this;
     }
@@ -330,6 +322,18 @@ class User implements UserInterface
     public function setRoles(?array $roles): self
     {
         $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(?string $token): self
+    {
+        $this->token = $token;
 
         return $this;
     }

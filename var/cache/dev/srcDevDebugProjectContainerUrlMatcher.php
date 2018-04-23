@@ -48,6 +48,11 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
             return array (  '_controller' => 'App\\Controller\\UserController::registerUser',  '_route' => 'registerUser',);
         }
 
+        // tokenCheck
+        if ('/tokenCheck' === $pathinfo) {
+            return array (  '_controller' => 'App\\Controller\\UserController::tokenCheck',  '_route' => 'tokenCheck',);
+        }
+
         // login
         if ('/login' === $pathinfo) {
             return array (  '_controller' => 'App\\Controller\\UserController::login',  '_route' => 'login',);

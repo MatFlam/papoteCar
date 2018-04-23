@@ -55,6 +55,10 @@ class __TwigTemplate_e7452f701a46c76f7033fa898ecea7193ead61d93786712e26401294a1b
         // line 5
         echo         $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderBlock((isset($context["registerUserForm"]) || array_key_exists("registerUserForm", $context) ? $context["registerUserForm"] : (function () { throw new Twig_Error_Runtime('Variable "registerUserForm" does not exist.', 5, $this->source); })()), 'form');
         echo "
+        ";
+        // line 6
+        echo $this->env->getRuntime('Symfony\Component\Form\FormRenderer')->searchAndRenderBlock((isset($context["registerUserForm"]) || array_key_exists("registerUserForm", $context) ? $context["registerUserForm"] : (function () { throw new Twig_Error_Runtime('Variable "registerUserForm" does not exist.', 6, $this->source); })()), 'rest');
+        echo "
     </div>
 ";
         
@@ -77,7 +81,7 @@ class __TwigTemplate_e7452f701a46c76f7033fa898ecea7193ead61d93786712e26401294a1b
 
     public function getDebugInfo()
     {
-        return array (  56 => 5,  53 => 4,  44 => 3,  15 => 1,);
+        return array (  60 => 6,  56 => 5,  53 => 4,  44 => 3,  15 => 1,);
     }
 
     public function getSourceContext()
@@ -87,8 +91,12 @@ class __TwigTemplate_e7452f701a46c76f7033fa898ecea7193ead61d93786712e26401294a1b
 {% block main %}
     <div id=\"registerDiv\">
 {{ form(registerUserForm) }}
+        {{ form_rest(registerUserForm) }}
     </div>
 {% endblock %}
+
+
+
 ", "user/registerUser.html.twig", "/var/www/html/papoteCar/templates/user/registerUser.html.twig");
     }
 }

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -18,6 +19,27 @@ class UserRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, User::class);
     }
+
+    public function findOneByToken($id, $token): array
+    {
+
+        $qb = $this->createQueryBuilder('m');
+        $qb->andWhere("m.user.id=".$id);
+        $qb->andWhere("m.token=".$token);
+        $qb->getSingleResult();
+
+        /* $qb->join('m.reviews', 'r'); //jointure
+         $qb->addSelect('r');*/
+
+        $query = $qb->getQuery();
+        $results = $query->getResult();
+
+
+        // returns an array of Product objects
+        return $results;
+    }
+
+
 
 //    /**
 //     * @return User[] Returns an array of User objects

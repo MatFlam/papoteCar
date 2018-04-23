@@ -15,7 +15,7 @@ class __TwigTemplate_4c1d1c2cc59438cd88dbb4ae333fe8e5b16b6e0865ca8439b5d226b775e
         $this->parent = $this->loadTemplate("base.html.twig", "default/index.html.twig", 1);
         $this->blocks = array(
             'title' => array($this, 'block_title'),
-            'body' => array($this, 'block_body'),
+            'main' => array($this, 'block_main'),
         );
     }
 
@@ -60,13 +60,13 @@ class __TwigTemplate_4c1d1c2cc59438cd88dbb4ae333fe8e5b16b6e0865ca8439b5d226b775e
     }
 
     // line 5
-    public function block_body($context, array $blocks = array())
+    public function block_main($context, array $blocks = array())
     {
         $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
-        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "body"));
+        $__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e->enter($__internal_085b0142806202599c7fe3b329164a92397d8978207a37e79d70b8c52599e33e_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "main"));
 
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
-        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "body"));
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "main"));
 
         // line 6
         echo "<style>
@@ -75,11 +75,19 @@ class __TwigTemplate_4c1d1c2cc59438cd88dbb4ae333fe8e5b16b6e0865ca8439b5d226b775e
 </style>
 
 <div class=\"example-wrapper\">
-    <h1>Hello ";
-        // line 12
-        echo twig_escape_filter($this->env, (isset($context["controller_name"]) || array_key_exists("controller_name", $context) ? $context["controller_name"] : (function () { throw new Twig_Error_Runtime('Variable "controller_name" does not exist.', 12, $this->source); })()), "html", null, true);
-        echo "! ✅</h1>
-
+    <h1>Hello coucoucoucocu ✅</h1>
+    ";
+        // line 13
+        echo twig_escape_filter($this->env, (isset($context["id"]) || array_key_exists("id", $context) ? $context["id"] : (function () { throw new Twig_Error_Runtime('Variable "id" does not exist.', 13, $this->source); })()), "html", null, true);
+        echo " <br/>
+    ";
+        // line 14
+        echo twig_escape_filter($this->env, (isset($context["token"]) || array_key_exists("token", $context) ? $context["token"] : (function () { throw new Twig_Error_Runtime('Variable "token" does not exist.', 14, $this->source); })()), "html", null, true);
+        echo "<br/>
+     results: : ";
+        // line 15
+        echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, (isset($context["results"]) || array_key_exists("results", $context) ? $context["results"] : (function () { throw new Twig_Error_Runtime('Variable "results" does not exist.', 15, $this->source); })()), "token", array()), "html", null, true);
+        echo "<br/>
     This friendly message is coming from:
     <ul>
         <li>Your controller at <code>src/Controller/DefaultController.php</code></li>
@@ -107,7 +115,7 @@ class __TwigTemplate_4c1d1c2cc59438cd88dbb4ae333fe8e5b16b6e0865ca8439b5d226b775e
 
     public function getDebugInfo()
     {
-        return array (  80 => 12,  72 => 6,  63 => 5,  45 => 3,  15 => 1,);
+        return array (  89 => 15,  85 => 14,  81 => 13,  72 => 6,  63 => 5,  45 => 3,  15 => 1,);
     }
 
     public function getSourceContext()
@@ -116,15 +124,17 @@ class __TwigTemplate_4c1d1c2cc59438cd88dbb4ae333fe8e5b16b6e0865ca8439b5d226b775e
 
 {% block title %}Hello !{% endblock %}
 
-{% block body %}
+{% block main %}
 <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
 <div class=\"example-wrapper\">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
+    <h1>Hello coucoucoucocu ✅</h1>
+    {{ id }} <br/>
+    {{ token }}<br/>
+     results: : {{ results.token }}<br/>
     This friendly message is coming from:
     <ul>
         <li>Your controller at <code>src/Controller/DefaultController.php</code></li>
