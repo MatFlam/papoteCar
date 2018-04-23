@@ -43,6 +43,11 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
         }
         not_home:
 
+        // question
+        if (0 === strpos($pathinfo, '/question') && preg_match('#^/question/(?P<id>[^/]++)$#sD', $pathinfo, $matches)) {
+            return $this->mergeDefaults(array_replace($matches, array('_route' => 'question')), array (  '_controller' => 'App\\Controller\\QuestionController::questionTravel',));
+        }
+
         // registerUser
         if ('/registerUser' === $pathinfo) {
             return array (  '_controller' => 'App\\Controller\\UserController::registerUser',  '_route' => 'registerUser',);

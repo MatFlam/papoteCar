@@ -33,6 +33,11 @@ class PrivateMessages
      */
     private $usertargetid;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $datecreated;
+
     public function getId()
     {
         return $this->id;
@@ -70,6 +75,18 @@ class PrivateMessages
     public function setUsertargetid(?User $usertargetid): self
     {
         $this->usertargetid = $usertargetid;
+
+        return $this;
+    }
+
+    public function getDatecreated(): ?\DateTimeInterface
+    {
+        return $this->datecreated;
+    }
+
+    public function setDatecreated(\DateTimeInterface $datecreated): self
+    {
+        $this->datecreated = $datecreated;
 
         return $this;
     }

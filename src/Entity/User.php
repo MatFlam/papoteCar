@@ -39,11 +39,6 @@ class User
     private $datecreated;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $rating;
-
-    /**
      * @ORM\Column(type="string", length=100, nullable=true)
      */
     private $licencenumber;
@@ -134,18 +129,6 @@ class User
     public function setDatecreated(\DateTimeInterface $datecreated): self
     {
         $this->datecreated = $datecreated;
-
-        return $this;
-    }
-
-    public function getRating(): ?int
-    {
-        return $this->rating;
-    }
-
-    public function setRating(?int $rating): self
-    {
-        $this->rating = $rating;
 
         return $this;
     }

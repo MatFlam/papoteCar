@@ -85,6 +85,11 @@ class Travel
      */
     private $carid;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $endhour;
+
     public function __construct()
     {
         $this->passengers = new ArrayCollection();
@@ -261,6 +266,18 @@ class Travel
     public function setCarid(?Car $carid): self
     {
         $this->carid = $carid;
+
+        return $this;
+    }
+
+    public function getEndhour(): ?\DateTimeInterface
+    {
+        return $this->endhour;
+    }
+
+    public function setEndhour(\DateTimeInterface $endhour): self
+    {
+        $this->endhour = $endhour;
 
         return $this;
     }
