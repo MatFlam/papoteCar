@@ -19,6 +19,7 @@ class srcDevDebugProjectContainerUrlGenerator extends Symfony\Component\Routing\
         if (null === self::$declaredRoutes) {
             self::$declaredRoutes = array(
         'home' => array (  0 =>   array (  ),  1 =>   array (    '_controller' => 'App\\Controller\\DefaultController::index',  ),  2 =>   array (  ),  3 =>   array (    0 =>     array (      0 => 'text',      1 => '/',    ),  ),  4 =>   array (  ),  5 =>   array (  ),),
+        'travel' => array (  0 =>   array (  ),  1 =>   array (    '_controller' => 'App\\Controller\\TravelController::index',  ),  2 =>   array (  ),  3 =>   array (    0 =>     array (      0 => 'text',      1 => '/travel',    ),  ),  4 =>   array (  ),  5 =>   array (  ),),
         'registerUser' => array (  0 =>   array (  ),  1 =>   array (    '_controller' => 'App\\Controller\\UserController::registerUser',  ),  2 =>   array (  ),  3 =>   array (    0 =>     array (      0 => 'text',      1 => '/registerUser',    ),  ),  4 =>   array (  ),  5 =>   array (  ),),
         'login' => array (  0 =>   array (  ),  1 =>   array (    '_controller' => 'App\\Controller\\UserController::login',  ),  2 =>   array (  ),  3 =>   array (    0 =>     array (      0 => 'text',      1 => '/login',    ),  ),  4 =>   array (  ),  5 =>   array (  ),),
         'logout' => array (  0 =>   array (  ),  1 =>   array (    '_controller' => 'App\\Controller\\UserController::logout',  ),  2 =>   array (  ),  3 =>   array (    0 =>     array (      0 => 'text',      1 => '/logout',    ),  ),  4 =>   array (  ),  5 =>   array (  ),),

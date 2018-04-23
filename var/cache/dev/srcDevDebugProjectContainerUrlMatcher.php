@@ -43,6 +43,11 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
         }
         not_home:
 
+        // travel
+        if ('/travel' === $pathinfo) {
+            return array (  '_controller' => 'App\\Controller\\TravelController::index',  '_route' => 'travel',);
+        }
+
         // registerUser
         if ('/registerUser' === $pathinfo) {
             return array (  '_controller' => 'App\\Controller\\UserController::registerUser',  '_route' => 'registerUser',);
