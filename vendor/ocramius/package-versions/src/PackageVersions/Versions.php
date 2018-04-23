@@ -71,11 +71,11 @@ final class Versions
   'zendframework/zend-code' => '3.3.0@6b1059db5b368db769e4392c6cb6cc139e56640d',
   'zendframework/zend-eventmanager' => '3.2.0@9d72db10ceb6e42fb92350c0cb54460da61bd79c',
   'symfony/dotenv' => 'v4.0.8@afb6923923e22874dac20bd042167ccb8df1d158',
-  'symfony/polyfill-iconv' => '*@adf19ff50fe217dc57442d3b623a8fab83ee34fc',
-  'symfony/polyfill-php71' => '*@adf19ff50fe217dc57442d3b623a8fab83ee34fc',
-  'symfony/polyfill-php70' => '*@adf19ff50fe217dc57442d3b623a8fab83ee34fc',
-  'symfony/polyfill-php56' => '*@adf19ff50fe217dc57442d3b623a8fab83ee34fc',
-  '__root__' => 'dev-master@adf19ff50fe217dc57442d3b623a8fab83ee34fc',
+  'symfony/polyfill-iconv' => '*@6ef9820d064552099c6a9f5fe7452515805ad3e0',
+  'symfony/polyfill-php71' => '*@6ef9820d064552099c6a9f5fe7452515805ad3e0',
+  'symfony/polyfill-php70' => '*@6ef9820d064552099c6a9f5fe7452515805ad3e0',
+  'symfony/polyfill-php56' => '*@6ef9820d064552099c6a9f5fe7452515805ad3e0',
+  '__root__' => 'dev-matDev@6ef9820d064552099c6a9f5fe7452515805ad3e0',
 );
 
     private function __construct()
