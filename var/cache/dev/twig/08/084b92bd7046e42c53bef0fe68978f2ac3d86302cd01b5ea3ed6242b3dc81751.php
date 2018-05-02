@@ -76,18 +76,6 @@ class __TwigTemplate_4c1d1c2cc59438cd88dbb4ae333fe8e5b16b6e0865ca8439b5d226b775e
 
 <div class=\"example-wrapper\">
     <h1>Hello coucoucoucocu ✅</h1>
-    ";
-        // line 13
-        echo twig_escape_filter($this->env, (isset($context["id"]) || array_key_exists("id", $context) ? $context["id"] : (function () { throw new Twig_Error_Runtime('Variable "id" does not exist.', 13, $this->source); })()), "html", null, true);
-        echo " <br/>
-    ";
-        // line 14
-        echo twig_escape_filter($this->env, (isset($context["token"]) || array_key_exists("token", $context) ? $context["token"] : (function () { throw new Twig_Error_Runtime('Variable "token" does not exist.', 14, $this->source); })()), "html", null, true);
-        echo "<br/>
-     results: : ";
-        // line 15
-        echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, (isset($context["results"]) || array_key_exists("results", $context) ? $context["results"] : (function () { throw new Twig_Error_Runtime('Variable "results" does not exist.', 15, $this->source); })()), "token", array()), "html", null, true);
-        echo "<br/>
     This friendly message is coming from:
     <ul>
         <li>Your controller at <code>src/Controller/DefaultController.php</code></li>
@@ -115,7 +103,7 @@ class __TwigTemplate_4c1d1c2cc59438cd88dbb4ae333fe8e5b16b6e0865ca8439b5d226b775e
 
     public function getDebugInfo()
     {
-        return array (  89 => 15,  85 => 14,  81 => 13,  72 => 6,  63 => 5,  45 => 3,  15 => 1,);
+        return array (  72 => 6,  63 => 5,  45 => 3,  15 => 1,);
     }
 
     public function getSourceContext()
@@ -132,9 +120,6 @@ class __TwigTemplate_4c1d1c2cc59438cd88dbb4ae333fe8e5b16b6e0865ca8439b5d226b775e
 
 <div class=\"example-wrapper\">
     <h1>Hello coucoucoucocu ✅</h1>
-    {{ id }} <br/>
-    {{ token }}<br/>
-     results: : {{ results.token }}<br/>
     This friendly message is coming from:
     <ul>
         <li>Your controller at <code>src/Controller/DefaultController.php</code></li>

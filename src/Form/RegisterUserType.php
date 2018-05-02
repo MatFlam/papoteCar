@@ -32,7 +32,7 @@ class RegisterUserType extends AbstractType
             ->add('licencenumber', null, [
                 "label" => "Your Driving Licence Number"
             ])
-            ->add('profilePicture', FileType::class, array('label' => 'Profile Picture'))
+            ->add('profilePicture', FileType::class, array('label' => 'Profile Picture', 'required' => false ))
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'The password fields must match.',

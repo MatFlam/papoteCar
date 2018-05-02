@@ -35,23 +35,41 @@ class UserController extends Controller
 
             $file = $registerUserForm->get('profilePicture')->getData();
 
-            $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+            if ($file === NULL) {
+                $user->setProfilepicture(NULL);
+            } elseif ($file) {
 
-            // moves the file to the directory where brochures are stored
-            $file->move(
-                $this->getParameter('profilesPics_directory'),
-                $fileName
-            );
+                if (($file->guessExtension() !== 'jpg') OR ($file->guessExtension() !== 'jpeg') OR ($file->guessExtension() !== 'png')) {
+                    var_dump($file);
+                    $this->addFlash('error', 'File must be .pnj or .jpeg');
+                    return $this->render('user/registerUser.html.twig', [
+                        'registerUserForm' => $registerUserForm->createView()
+                    ]);
+
+                }
+                else {
+                    var_dump($file);
+                    $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+                    var_dump($fileName);
+                    // moves the file to the directory where brochures are stored
+                    $file->move(
+                        $this->getParameter('profilesPics_directory'),
+                        $fileName
+                    );
+                    $user->setProfilepicture($fileName);
+                }
+
+            }
 
             //Create a "unique" token.
             $token = bin2hex(openssl_random_pseudo_bytes(16));
 
             $user->setToken($token);
-            $user->setProfilepicture($fileName);
+
 
             $em->persist($user);
             $em->flush();
-
+var_dump($user);
             $this->addFlash('success', 'Your account has been successfully created, you must have received a confirmation mail');
 
 
@@ -92,6 +110,8 @@ class UserController extends Controller
 
 
             $mailer->send($message);
+
+
         }
 
         return $this->render('user/registerUser.html.twig', [
@@ -106,7 +126,6 @@ class UserController extends Controller
     public function tokenCheck(EntityManagerInterface $em)
     {
 //Make sure that our query string parameters exist.
-
         $token = trim($_GET['token']);
         $userId = trim($_GET['user']);
 
@@ -119,13 +138,13 @@ class UserController extends Controller
             ]);
 
             if ($results) {
-                $user = new User();
-                $userRepo = $this->getDoctrine()->getRepository(User::class);
                 $user = $userRepo->findOneBy([
                     'id' => $userId,
                     'token' => $token,
                 ]);
+
                 $user->setRoles(['ROLE_USER']);
+                $user->setToken(Null);
                 $em->persist($user);
                 $em->flush();
                 return $this->render('default/index.html.twig', [
