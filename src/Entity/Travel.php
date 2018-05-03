@@ -72,7 +72,7 @@ class Travel
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="travels")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $userid;
+    private $user;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\User")
@@ -83,11 +83,18 @@ class Travel
      * @ORM\ManyToOne(targetEntity="App\Entity\Car")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $carid;
+    private $car;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Question", mappedBy="travel")
+     */
+    private $questions;
+
 
     public function __construct()
     {
         $this->passengers = new ArrayCollection();
+        $this->questions = new ArrayCollection();
     }
 
     public function getId()
@@ -215,17 +222,6 @@ class Travel
         return $this;
     }
 
-    public function getUserid(): ?User
-    {
-        return $this->userid;
-    }
-
-    public function setUserid(?User $userid): self
-    {
-        $this->userid = $userid;
-
-        return $this;
-    }
 
     /**
      * @return Collection|User[]
@@ -253,15 +249,59 @@ class Travel
         return $this;
     }
 
-    public function getCarid(): ?Car
+    public function getUser(): ?User
     {
-        return $this->carid;
+        return $this->user;
     }
 
-    public function setCarid(?Car $carid): self
+    public function setUser(?User $user): self
     {
-        $this->carid = $carid;
+        $this->user = $user;
 
         return $this;
     }
+
+    public function getCar(): ?Car
+    {
+        return $this->car;
+    }
+
+    public function setCar(?Car $car): self
+    {
+        $this->car = $car;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Question[]
+     */
+    public function getQuestions(): Collection
+    {
+        return $this->questions;
+    }
+
+    public function addQuestion(Question $question): self
+    {
+        if (!$this->questions->contains($question)) {
+            $this->questions[] = $question;
+            $question->setTravel($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuestion(Question $question): self
+    {
+        if ($this->questions->contains($question)) {
+            $this->questions->removeElement($question);
+            // set the owning side to null (unless already changed)
+            if ($question->getTravel() === $this) {
+                $question->setTravel(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

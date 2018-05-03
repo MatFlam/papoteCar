@@ -17,16 +17,16 @@ class Question
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="questions")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $userid;
+    private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Travel")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Travel", inversedBy="questions")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $travelid;
+    private $travel;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -36,33 +36,33 @@ class Question
     /**
      * @ORM\Column(type="datetime")
      */
-    private $datecreated;
+    private $dateCreated;
 
     public function getId()
     {
         return $this->id;
     }
 
-    public function getUserid(): ?User
+    public function getUser(): ?User
     {
-        return $this->userid;
+        return $this->user;
     }
 
-    public function setUserid(?User $userid): self
+    public function setUser(?User $user): self
     {
-        $this->userid = $userid;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getTravelid(): ?Travel
+    public function getTravel(): ?Travel
     {
-        return $this->travelid;
+        return $this->travel;
     }
 
-    public function setTravelid(?Travel $travelid): self
+    public function setTravel(?Travel $travel): self
     {
-        $this->travelid = $travelid;
+        $this->travel = $travel;
 
         return $this;
     }
@@ -79,14 +79,14 @@ class Question
         return $this;
     }
 
-    public function getDatecreated(): ?\DateTimeInterface
+    public function getDateCreated(): ?\DateTimeInterface
     {
-        return $this->datecreated;
+        return $this->dateCreated;
     }
 
-    public function setDatecreated(\DateTimeInterface $datecreated): self
+    public function setDateCreated(\DateTimeInterface $dateCreated): self
     {
-        $this->datecreated = $datecreated;
+        $this->dateCreated = $dateCreated;
 
         return $this;
     }

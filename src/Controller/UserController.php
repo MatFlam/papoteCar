@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Travel;
 use App\Entity\User;
 use App\Form\RegisterUserType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -38,27 +39,23 @@ class UserController extends Controller
             if ($file === NULL) {
                 $user->setProfilepicture(NULL);
             } elseif ($file) {
+                if (($file->getClientOriginalExtension() === 'jpg') OR ($file->getClientOriginalExtension() === 'jpeg') OR ($file->getClientOriginalExtension() === 'png')) {
 
-                if (($file->guessExtension() !== 'jpg') OR ($file->guessExtension() !== 'jpeg') OR ($file->guessExtension() !== 'png')) {
-                    var_dump($file);
-                    $this->addFlash('error', 'File must be .pnj or .jpeg');
-                    return $this->render('user/registerUser.html.twig', [
-                        'registerUserForm' => $registerUserForm->createView()
-                    ]);
-
-                }
-                else {
-                    var_dump($file);
                     $fileName = md5(uniqid()) . '.' . $file->guessExtension();
-                    var_dump($fileName);
+
                     // moves the file to the directory where brochures are stored
                     $file->move(
                         $this->getParameter('profilesPics_directory'),
                         $fileName
                     );
                     $user->setProfilepicture($fileName);
-                }
+                } else {
 
+                    $this->addFlash('danger', 'File must be .pnj or .jpeg');
+                    return $this->render('user/registerUser.html.twig', [
+                        'registerUserForm' => $registerUserForm->createView()
+                    ]);
+                }
             }
 
             //Create a "unique" token.
@@ -69,7 +66,6 @@ class UserController extends Controller
 
             $em->persist($user);
             $em->flush();
-var_dump($user);
             $this->addFlash('success', 'Your account has been successfully created, you must have received a confirmation mail');
 
 
@@ -110,9 +106,10 @@ var_dump($user);
 
 
             $mailer->send($message);
-
+            return $this->redirectToRoute('login');
 
         }
+
 
         return $this->render('user/registerUser.html.twig', [
             'registerUserForm' => $registerUserForm->createView()
@@ -147,7 +144,7 @@ var_dump($user);
                 $user->setToken(Null);
                 $em->persist($user);
                 $em->flush();
-                return $this->render('default/index.html.twig', [
+                return $this->render('security/login.html.twig', [
                     'id' => $userId,
                     'token' => $token,
                     'results' => $results
@@ -156,7 +153,7 @@ var_dump($user);
             }
 
         }
-        return $this->redirectToRoute("home");
+        return $this->redirectToRoute("login");
     }
 
 
@@ -170,13 +167,13 @@ var_dump($user);
 
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
-        var_dump($lastUsername);
+
 
         //on bloque l'accès si deja connecté
         if ($this->getUser()) {
             return $this->redirectToRoute("home");
         } else {
-            $this->addFlash('alert', 'you have trompé your identifiants');
+            $this->addFlash('danger', 'you have trompé your identifiants');
         }
 
         return $this->render('security/login.html.twig', array(
@@ -191,5 +188,29 @@ var_dump($user);
     public function logout()
     {
 
+    }
+
+    /**
+     * @Route("/profil/{id}", name="profil_user")
+     */
+    public function profilUser(EntityManagerInterface $em, $id)
+    {
+        $user = $this->getUser();
+        $travel = $this->getDoctrine()->getRepository(Travel::class)->findBy(["userid" => $id]);
+        $userInfos = $this->getDoctrine()->getRepository(User::class)->findOneBy(["id" => $id]);
+        // voir pourquoi il n'y a que la table travel qui contient un lien vers car/user pour savoir a qui
+        // appartient la voiture...
+        $userCarInfos = $this->getDoctrine()->getRepository(Travel::class)->findOneBy(["carid" => $id]);
+
+        $count = 0;
+        foreach ($travel as $nb) {
+            $count++;
+        }
+        return $this->render('user/profilUser.twig', [
+            "userInfos" => $userInfos,
+            "travel" => $travel,
+            "count" => $count,
+            "car" => $userCarInfos,
+        ]);
     }
 }

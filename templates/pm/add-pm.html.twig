@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+{% block main %}
+    {#affichage des messages flash#}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+    <h3>Send a private message to {{ target_username }}</h3>
+    {% if app.user %}
+        <div>
+            {{ form_start(pmForm) }}
+            {{ form_widget(pmForm) }}
+            <button class="btn btn-primary">Send !</button>
+            {{ form_end(pmForm) }}
+        </div>
+        {#{% else %}#}
+        <div>
+        {#<a class="nav-link" href="{{ path('login') }}" title="About">#}
+        login
+        {#</a>#}
+        {#to send a private message to {{ target_username }}</div>#}
+    {% endif %}
+    </div>
+    <hr>
+{% endblock %}

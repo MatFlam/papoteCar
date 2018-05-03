@@ -21,7 +21,7 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      *
      * @Assert\Email(strict=true, message="Le format de l'email est incorrect")
      * @Assert\Email(checkMX=true, message="Aucun serveur mail n'a été trouvé pour ce domaine")
@@ -59,7 +59,7 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50, unique=true)
      */
     private $username;
 

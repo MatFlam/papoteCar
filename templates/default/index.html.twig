@@ -2,18 +2,141 @@
 
 {% block title %}Hello !{% endblock %}
 
-{% block main %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+{% block body %}
 
-<div class="example-wrapper">
-    <h1>Hello coucoucoucocu ✅</h1>
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>src/Controller/DefaultController.php</code></li>
-        <li>Your template at <code>templates/default/index.html.twig</code></li>
-    </ul>
-</div>
 {% endblock %}
+
+{% block main %}
+
+    <div class="home-image-full">
+        <div class="container">
+            <div id="search">
+                <h2>
+                    Un jour j'irai à Chateauroux avec toi !
+                </h2>
+                <h5>
+                    Tous les chemins mènent où vous voulez aller, covoiturez !
+                </h5>
+                <div id="form-search" class="row">
+                    <div class="input-search-white grey col-sm-12 col-md-12 col-lg-3">
+                        <div class="input-search-group row">
+                            <i class="material-icons grey col-2">location_on</i>
+                            <input class="col-10" type="text" placeholder="Départ">
+                        </div>
+                    </div>
+                    <div class="input-search-white grey col-sm-12 col-md-12 col-lg-3">
+                        <div class="input-search-group row">
+                            <i class="material-icons grey col-2">location_on</i>
+                            <input class="col-10" type="text" placeholder="Arrivée">
+                        </div>
+                    </div>
+                    <div class="input-search-white grey col-sm-12 col-md-12 col-lg-3">
+                        <div class="input-search-group row">
+                            <i class="material-icons grey col-2">date_range</i>
+                            <input class="col-10" type="date" placeholder="Date">
+                        </div>
+                    </div>
+                    <div id="btn-blue" class="input-search-blue white col-sm-12 col-md-12 col-lg-3">
+                        <div class="input-search-group row">
+                            <i class="material-icons white col-2">directions_car</i>
+                            <button class="button-search "><span>C'est parti !</span></button>
+                        </div>
+                    </div>
+                    {#<div class="col-sm-12 col-md-12 col-lg-3">#}
+
+                        {#<button class="button-search button-blue"><i class="material-icons">directions_car</i><span>C'est parti !</span></button>#}
+                    {#</div>#}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="container">
+
+        <article>
+            <div class="entry_content">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <img src="{{ asset('pictures/default/855891006.jpg') }}" alt="">
+
+                    </div>
+
+                    <div class="col-md-6 col-sm-12">
+                        <h3>
+                            Ta voiture n'est pas une monoplace ?
+                        </h3>
+                        <p>Partage ta voiture et ton trajet !</p>
+                            <a href="{{ path('travel_home') }}"><button type="button" class="button-nav button-blue" title="Proposer un trajet">
+                                    <span>Proposer un trajet</span>
+                                </button>
+                            </a>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </article>
+
+
+        <article>
+
+            <div class="entry_content">
+
+                <p></p><div class="wrapper" style="background-color: #ffffff;">
+
+                    <div class="row "><div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><div style="height:30px"></div><div class="wrapper  " style="">
+
+                                <div class="row "><div class="col-xs-12 col-xxs-6 col-sm-6 col-md-3 col-lg-3"><div class="blox_element blox_elem_service style1  ">
+
+                                            <span class="service_icon icon-building" style="color:;"></span>
+
+                                            <h3>Faites des économies</h3>
+
+                                            <div class="service_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</div>
+
+                                        </div></div><div class="col-xs-12 col-xxs-6 col-sm-6 col-md-3 col-lg-3"><div class="blox_element blox_elem_service style1  ">
+
+                                            <span class="service_icon icon-bookmark-empty" style="color:;"></span>
+
+                                            <h3>Rencontrez des gens sympas</h3>
+
+                                            <div class="service_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</div>
+
+                                        </div></div><div class="col-xs-12 col-xxs-6 col-sm-6 col-md-3 col-lg-3"><div class="blox_element blox_elem_service style1  ">
+
+                                            <span class="service_icon icon-heart-empty" style="color:;"></span>
+
+                                            <h3>Améliorez vos trajets</h3>
+
+                                            <div class="service_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</div>
+
+                                        </div></div><div class="col-xs-12 col-xxs-6 col-sm-6 col-md-3 col-lg-3"><div class="blox_element blox_elem_service style1  ">
+
+                                            <span class="service_icon icon-comment-alt" style="color:;"></span>
+
+                                            <h3>Soyez libres !</h3>
+
+                                            <div class="service_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</div>
+
+                                        </div></div></div>
+
+                            </div><div style="height:30px"></div></div></div>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+
+    </div>
+
+
+
+
+{% endblock %}
+
+

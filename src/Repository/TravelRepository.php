@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Travel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -17,6 +18,22 @@ class TravelRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Travel::class);
+    }
+
+    public function findPaginated($page = 1,$startCity = null, $endCity = null)
+    {
+        $qb = $this->createQueryBuilder('t');
+        $qb->addOrderBy('t.starthour', 'DESC');
+        $qb->join('t.user', 'u')->addSelect('u');
+        $qb->andWhere("t.startcity = :startCity");
+        $qb->setParameter('startCity', $startCity);
+        $qb->andWhere("t.endcity >= :endCity");
+        $qb->setParameter('endCity', $endCity);
+        $qb->setMaxResults(50);
+        $qb->setFirstResult(($page-1)*50);
+        $query = $qb->getQuery();
+        //$results = $query->getResult();
+        return new Paginator($query);
     }
 
 //    /**

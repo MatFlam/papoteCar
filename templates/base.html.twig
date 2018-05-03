@@ -5,15 +5,11 @@
     <link rel="stylesheet" href="{{ asset('../public/css/app.css') }}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
     {% block stylesheets %}{% endblock %}
 </head>
-<div>
-    <a class="dropdown-item" href="{{ path('home') }}">Accueil</a>
-    <a href="{{ path('registerUser') }}">Register</a>
-    <a href="{{ path('login') }}">Login</a>
-    <a href="{{ path('logout') }}">Log out</a>
-</div>
 {% for label, messages in app.flashes %}
     {% for message in messages %}
         <div class="alert alert-{{ label }}">
@@ -21,13 +17,58 @@
         </div>
     {% endfor %}
 {% endfor %}
-<div>
-
-</div>
 <body style="background-image: url({% block bg %}{% endblock %});">
-<main>
-    {% block main %} {% endblock %}
-</main>
+<header>
+    <div class="logo">
+        <a href="{{ path('home') }}" title="accueil">
+            <img src="{{ asset('pictures/default/logo.png') }}" alt="Papotecar'">
+        </a>
+    </div>
+    <ul class="ul-nav">
+        {% if app.user %}
+            <li>
+                <a href="{{ path('logout') }}"><button type="button" class="button-nav button-white">
+                    <span>Me déconnecter</span>
+                    </button></a>
+            </li>
+            <li><a href="{{ path('profil_user',  {"id": app.user.id }) }}">
+                <button type="button" class="button-nav button-white">
+                    <span>Mon compte</span>
+                </button></a>
+            </li>
+            <li>
+                <a href="{{ path('travel-list') }}"><button type="button" class="button-nav button-white">
+                        <span>Liste des trajets</span>
+                    </button></a>
+            </li>
+        {% else %}
+            <li>
+                <a href="{{ path('login') }}" title="Connexion">
+                    <i class="material-icons md-36 icon-blue">account_circle</i>
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('registerUser') }}" title="inscription">
+                    <button type="button" class="button-nav button-white">
+                        <span>Inscription</span>
+                    </button>
+                </a>
+            </li>
+        {% endif %}
+        <li>
+            <a href="{{ path('travel_home') }}"><button type="button" class="button-nav button-blue" title="Proposer un trajet">
+                <span>Proposer un trajet</span>
+            </button>
+            </a>
+        </li>
+    </ul>
+
+</header>
+
+{% block main %}
+
+{% endblock %}
+
 </body>
 <footer>
     &copy; {{ "now"|date('Y') }} POEC 22 / "Les semi-croustillants"

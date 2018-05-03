@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rechercher un trajet{% endblock %}
+{% block stylesheets %}
+
+{% endblock %}
+
+{% block main %}
+    <h1>RECHERCHER</h1>
+    {{ form_start(form) }}
+    {{ form_end(form) }}
+    {% for travel in travels %}
+        <div class="active">Date de création de l'annonce: {{ travel.datecreated|date }}</div>
+        <div class="btn"> Titre de l'annonce </div>:<div class="btn btn-1">{{ travel.title }}</div><br>
+        <div class="btn"> Auteur </div>:<div class="btn btn-1">{{ travel.user.firstname }} {{ travel.user.name|upper }}</div><br>
+        <div class="btn"> Ville de départ </div>:<div class="btn btn-1">{{ travel.startcity }} {{ travel.endzipcode }}</div><br>
+        <div class="btn"> Heure de départ </div>:<div class="btn btn-1">{{ travel.starthour|date }}</div><br>
+        -------<br>
+        <div class="btn"> Ville d'arrivée </div>:<div class="btn btn-1">{{ travel.endaddress }} {{ travel.endcity }}</div><br>
+        <div class="btn"> Prix du trajet </div>:<div class="btn btn-1">{{ travel.price }} Euros</div><br>
+
+        <hr>    {% endfor %}
+{% endblock %}

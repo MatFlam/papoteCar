@@ -28,6 +28,29 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
             $canonicalMethod = 'GET';
         }
 
+        // commentUserOnTravel
+        if (0 === strpos($pathinfo, '/comment/user') && preg_match('#^/comment/user/(?P<id_trajet>[^/]++)/(?P<id_cible>[^/]++)$#sD', $pathinfo, $matches)) {
+            return $this->mergeDefaults(array_replace($matches, array('_route' => 'commentUserOnTravel')), array (  '_controller' => 'App\\Controller\\CommentController::commentUserOnTravel',));
+        }
+
+        if (0 === strpos($pathinfo, '/comment/admin')) {
+            // commentAdminShow
+            if (0 === strpos($pathinfo, '/comment/admin/show') && preg_match('#^/comment/admin/show/(?P<id_comment>[^/]++)$#sD', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'commentAdminShow')), array (  '_controller' => 'App\\Controller\\CommentController::commentShow',));
+            }
+
+            // commentAdminDelete
+            if ('/comment/admin/del' === $pathinfo) {
+                return array (  '_controller' => 'App\\Controller\\CommentController::commentDelete',  '_route' => 'commentAdminDelete',);
+            }
+
+            // commentOffense
+            if (0 === strpos($pathinfo, '/comment/admin/offense') && preg_match('#^/comment/admin/offense/(?P<id_comment>[^/]++)/(?P<id_offenser>[^/]++)$#sD', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'commentOffense')), array (  '_controller' => 'App\\Controller\\CommentController::commentOffense',));
+            }
+
+        }
+
         // home
         if ('' === $trimmedPathinfo) {
             $ret = array (  '_controller' => 'App\\Controller\\DefaultController::index',  '_route' => 'home',);
@@ -43,14 +66,57 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
         }
         not_home:
 
-        // registerUser
-        if ('/registerUser' === $pathinfo) {
-            return array (  '_controller' => 'App\\Controller\\UserController::registerUser',  '_route' => 'registerUser',);
+        // pm
+        if (0 === strpos($pathinfo, '/pm') && preg_match('#^/pm/(?P<id>[^/]++)$#sD', $pathinfo, $matches)) {
+            return $this->mergeDefaults(array_replace($matches, array('_route' => 'pm')), array (  '_controller' => 'App\\Controller\\PmController::addPm',));
+        }
+
+        // profil_user
+        if (0 === strpos($pathinfo, '/profil') && preg_match('#^/profil/(?P<id>[^/]++)$#sD', $pathinfo, $matches)) {
+            return $this->mergeDefaults(array_replace($matches, array('_route' => 'profil_user')), array (  '_controller' => 'App\\Controller\\UserController::profilUser',));
+        }
+
+        // question
+        if (0 === strpos($pathinfo, '/question') && preg_match('#^/question/(?P<id>[^/]++)$#sD', $pathinfo, $matches)) {
+            return $this->mergeDefaults(array_replace($matches, array('_route' => 'question')), array (  '_controller' => 'App\\Controller\\QuestionController::questionTravel',));
+        }
+
+        if (0 === strpos($pathinfo, '/travel')) {
+            // travel_add
+            if (0 === strpos($pathinfo, '/travel_add') && preg_match('#^/travel_add/(?P<id>[^/]++)$#sD', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'travel_add')), array (  '_controller' => 'App\\Controller\\TravelController::travelAdd',));
+            }
+
+            // travel_remove
+            if (0 === strpos($pathinfo, '/travel_remove') && preg_match('#^/travel_remove/(?P<id>[^/]++)$#sD', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'travel_remove')), array (  '_controller' => 'App\\Controller\\TravelController::travelRemove',));
+            }
+
+            // travel-list
+            if ('/travel-list' === $pathinfo) {
+                return array (  '_controller' => 'App\\Controller\\TravelController::travelParticipate',  '_route' => 'travel-list',);
+            }
+
+            // travel_home
+            if ('/travel' === $pathinfo) {
+                return array (  '_controller' => 'App\\Controller\\TravelController::travelHome',  '_route' => 'travel_home',);
+            }
+
+            // travel_search
+            if (0 === strpos($pathinfo, '/travelSearch') && preg_match('#^/travelSearch/(?P<villeDepart>[^/]++)/(?P<villeArrivee>[^/]++)(?:/(?P<page>[0-9]+))?$#sD', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'travel_search')), array (  'page' => '1',  '_controller' => 'App\\Controller\\TravelController::travelSearch',));
+            }
+
         }
 
         // tokenCheck
         if ('/tokenCheck' === $pathinfo) {
             return array (  '_controller' => 'App\\Controller\\UserController::tokenCheck',  '_route' => 'tokenCheck',);
+        }
+
+        // registerUser
+        if ('/registerUser' === $pathinfo) {
+            return array (  '_controller' => 'App\\Controller\\UserController::registerUser',  '_route' => 'registerUser',);
         }
 
         // login

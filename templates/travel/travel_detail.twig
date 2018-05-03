@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}information du trajet {% endblock %}
+{% block stylesheets %}
+
+{% endblock %}
+{% block main %}
+    <div class="panel panel-info">
+        <h1>{{ travelDetail.title }}</h1>
+    </div>
+    {% if travelDetail %}
+            <div class="active">Date de création de l'annonce: {{ travelDetail.datecreated|date }}</div>
+            <div class="btn"> Titre de l'annonce </div>:<div class="btn btn-1">{{ travelDetail.title }}</div><br>
+            <div class="btn"> Auteur </div>:<div class="btn btn-1">{{ travelDetail.userid.firstname }} {{ travelDetail.userid.name|upper }}</div><br>
+            <div class="btn"> Ville de départ </div>:<div class="btn btn-1">{{ travelDetail.startcity }} {{ travelDetail.endzipcode }}</div><br>
+            <div class="btn"> Heure de départ </div>:<div class="btn btn-1">{{ travelDetail.starthour|date }}</div><br>
+            -------<br>
+            <div class="btn"> Ville d'arrivée </div>:<div class="btn btn-1">{{ travelDetail.endaddress }} {{ travelDetail.endcity }}</div><br>
+            <div class="btn"> Prix du trajet </div>:<div class="btn btn-1">{{ travelDetail.price }} Euros</div><br>
+
+            <hr>
+    {% else %}
+        <div class="btn btn-error">There are actually no travel</div>
+    {% endif %}
+{% endblock %}

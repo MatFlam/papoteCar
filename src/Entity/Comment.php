@@ -20,7 +20,7 @@ class Comment
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $userlauncherid;
+    private $userlauncher;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -36,35 +36,29 @@ class Comment
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $usertargetid;
+    private $usertarget;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Travel")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $travelid;
+    private $travel;
 
     /**
      * @ORM\Column(type="integer")
      */
     private $rating;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $display;
+
     public function getId()
     {
         return $this->id;
     }
 
-    public function getUserlauncherid(): ?User
-    {
-        return $this->userlauncherid;
-    }
-
-    public function setUserlauncherid(?User $userlauncherid): self
-    {
-        $this->userlauncherid = $userlauncherid;
-
-        return $this;
-    }
 
     public function getContent(): ?string
     {
@@ -90,29 +84,6 @@ class Comment
         return $this;
     }
 
-    public function getUsertargetid(): ?User
-    {
-        return $this->usertargetid;
-    }
-
-    public function setUsertargetid(?User $usertargetid): self
-    {
-        $this->usertargetid = $usertargetid;
-
-        return $this;
-    }
-
-    public function getTravelid(): ?Travel
-    {
-        return $this->travelid;
-    }
-
-    public function setTravelid(?Travel $travelid): self
-    {
-        $this->travelid = $travelid;
-
-        return $this;
-    }
 
     public function getRating(): ?int
     {
@@ -122,6 +93,54 @@ class Comment
     public function setRating(int $rating): self
     {
         $this->rating = $rating;
+
+        return $this;
+    }
+
+    public function getDisplay(): ?bool
+    {
+        return $this->display;
+    }
+
+    public function setDisplay(bool $display): self
+    {
+        $this->display = $display;
+
+        return $this;
+    }
+
+    public function getTravel(): ?Travel
+    {
+        return $this->travel;
+    }
+
+    public function setTravel(?Travel $travel): self
+    {
+        $this->travel = $travel;
+
+        return $this;
+    }
+
+    public function getUserlauncher(): ?User
+    {
+        return $this->userlauncher;
+    }
+
+    public function setUserlauncher(?User $userlauncher): self
+    {
+        $this->userlauncher = $userlauncher;
+
+        return $this;
+    }
+
+    public function getUsertarget(): ?User
+    {
+        return $this->usertarget;
+    }
+
+    public function setUsertarget(?User $usertarget): self
+    {
+        $this->usertarget = $usertarget;
 
         return $this;
     }
