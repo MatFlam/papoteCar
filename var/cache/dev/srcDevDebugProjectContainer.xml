@@ -397,6 +397,9 @@
     <service id="App\Controller\UserController" class="App\Controller\UserController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
     </service>
+    <service id="App\Form\AlertType" class="App\Form\AlertType" public="false" autowire="true" autoconfigure="true">
+      <tag name="form.type"/>
+    </service>
     <service id="App\Form\CommentType" class="App\Form\CommentType" public="false" autowire="true" autoconfigure="true">
       <tag name="form.type"/>
     </service>
@@ -417,6 +420,10 @@
     </service>
     <service id="App\Form\TravelType" class="App\Form\TravelType" public="false" autowire="true" autoconfigure="true">
       <tag name="form.type"/>
+    </service>
+    <service id="App\Repository\AlertRepository" class="App\Repository\AlertRepository" public="false" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
     </service>
     <service id="App\Repository\CarRepository" class="App\Repository\CarRepository" public="false" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
@@ -466,7 +473,7 @@
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver" public="false">
       <tag name="controller.argument_value_resolver" priority="-50"/>
-      <argument type="service" id="service_locator.ikoRATy"/>
+      <argument type="service" id="service_locator.mgE32sP"/>
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver" public="false">
       <tag name="controller.argument_value_resolver" priority="-100"/>
@@ -701,6 +708,7 @@
         <argument>Symfony\Bridge\Doctrine\Form\Type</argument>
       </argument>
       <argument type="collection">
+        <argument>App\Form\AlertType</argument>
         <argument>App\Form\CommentType</argument>
         <argument>App\Form\OffenseType</argument>
         <argument>App\Form\PrivateMessagesType</argument>
@@ -913,7 +921,7 @@
       <argument type="service" id="form.resolved_type_factory"/>
     </service>
     <service id="form.extension" class="Symfony\Component\Form\Extension\DependencyInjection\DependencyInjectionExtension" public="false">
-      <argument type="service" id="service_locator.c7yFyYZ"/>
+      <argument type="service" id="service_locator.fWURASM"/>
       <argument type="collection">
         <argument key="Symfony\Component\Form\Extension\Core\Type\FormType" type="iterator">
           <argument type="service" id="form.type_extension.form.http_foundation"/>
@@ -2934,7 +2942,7 @@
       <factory class="Doctrine\ORM\EntityManager" method="create"/>
     </service>
     <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory" public="false">
-      <argument type="service" id="service_locator.gxw9HwO"/>
+      <argument type="service" id="service_locator.TDBlvd6"/>
     </service>
     <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
       <argument type="collection"/>
@@ -4092,6 +4100,8 @@
     <service id="abstract.instanceof.App\Controller\TravelController" class="App\Controller\TravelController" public="false" autowire="true" autoconfigure="true" abstract="true"/>
     <service id="instanceof.Symfony\Bundle\FrameworkBundle\Controller\Controller.0.App\Controller\UserController" class="App\Controller\UserController" public="false" autowire="true" abstract="true"/>
     <service id="abstract.instanceof.App\Controller\UserController" class="App\Controller\UserController" public="false" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id="instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\AlertType" class="App\Form\AlertType" public="false" autowire="true" abstract="true"/>
+    <service id="abstract.instanceof.App\Form\AlertType" class="App\Form\AlertType" public="false" autowire="true" autoconfigure="true" abstract="true"/>
     <service id="instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\CommentType" class="App\Form\CommentType" public="false" autowire="true" abstract="true"/>
     <service id="abstract.instanceof.App\Form\CommentType" class="App\Form\CommentType" public="false" autowire="true" autoconfigure="true" abstract="true"/>
     <service id="instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\OffenseType" class="App\Form\OffenseType" public="false" autowire="true" abstract="true"/>
@@ -4106,6 +4116,8 @@
     <service id="abstract.instanceof.App\Form\TravelSearchType" class="App\Form\TravelSearchType" public="false" autowire="true" autoconfigure="true" abstract="true"/>
     <service id="instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\TravelType" class="App\Form\TravelType" public="false" autowire="true" abstract="true"/>
     <service id="abstract.instanceof.App\Form\TravelType" class="App\Form\TravelType" public="false" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id="instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\AlertRepository" class="App\Repository\AlertRepository" public="false" autowire="true" abstract="true"/>
+    <service id="abstract.instanceof.App\Repository\AlertRepository" class="App\Repository\AlertRepository" public="false" autowire="true" autoconfigure="true" abstract="true"/>
     <service id="instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\CarRepository" class="App\Repository\CarRepository" public="false" autowire="true" abstract="true"/>
     <service id="abstract.instanceof.App\Repository\CarRepository" class="App\Repository\CarRepository" public="false" autowire="true" autoconfigure="true" abstract="true"/>
     <service id="instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\CommentRepository" class="App\Repository\CommentRepository" public="false" autowire="true" abstract="true"/>
@@ -4273,11 +4285,19 @@
         <argument key="em" type="service" id="doctrine.orm.default_entity_manager" on-invalid="ignore"/>
       </argument>
     </service>
-    <service id="service_locator.gMOsWdV" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id="service_locator.oyUChJC" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="authenticationUtils" type="service" id="security.authentication_utils" on-invalid="ignore"/>
         <argument key="em" type="service" id="doctrine.orm.default_entity_manager" on-invalid="ignore"/>
+        <argument key="mailer" type="service" id="swiftmailer.mailer.default" on-invalid="ignore"/>
+      </argument>
+    </service>
+    <service id="service_locator.pIVu91p" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="em" type="service" id="doctrine.orm.default_entity_manager" on-invalid="ignore"/>
+        <argument key="mailer" type="service" id="swiftmailer.mailer.default" on-invalid="ignore"/>
       </argument>
     </service>
     <service id="service_locator.P1xQlof" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
@@ -4300,7 +4320,7 @@
         <argument key="authenticationUtils" type="service" id="security.authentication_utils" on-invalid="ignore"/>
       </argument>
     </service>
-    <service id="service_locator.ikoRATy" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id="service_locator.mgE32sP" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\CommentController:commentDelete" type="service" id="service_locator.4UObkcl"/>
@@ -4308,8 +4328,9 @@
         <argument key="App\Controller\CommentController:commentUserOnTravel" type="service" id="service_locator.4UObkcl"/>
         <argument key="App\Controller\PmController:addPm" type="service" id="service_locator.Tgh4rjm"/>
         <argument key="App\Controller\QuestionController:questionTravel" type="service" id="service_locator.r5iLDWN"/>
+        <argument key="App\Controller\TravelController:alertTravelRegister" type="service" id="service_locator.pIVu91p"/>
         <argument key="App\Controller\TravelController:travelAdd" type="service" id="service_locator.XmJoKHR"/>
-        <argument key="App\Controller\TravelController:travelHome" type="service" id="service_locator.gMOsWdV"/>
+        <argument key="App\Controller\TravelController:travelHome" type="service" id="service_locator.oyUChJC"/>
         <argument key="App\Controller\TravelController:travelParticipate" type="service" id="service_locator.XmJoKHR"/>
         <argument key="App\Controller\TravelController:travelRemove" type="service" id="service_locator.XmJoKHR"/>
         <argument key="App\Controller\TravelController:travelSearch" type="service" id="service_locator.XmJoKHR"/>
@@ -4322,8 +4343,9 @@
         <argument key="App\Controller\CommentController::commentUserOnTravel" type="service" id="service_locator.4UObkcl"/>
         <argument key="App\Controller\PmController::addPm" type="service" id="service_locator.Tgh4rjm"/>
         <argument key="App\Controller\QuestionController::questionTravel" type="service" id="service_locator.r5iLDWN"/>
+        <argument key="App\Controller\TravelController::alertTravelRegister" type="service" id="service_locator.pIVu91p"/>
         <argument key="App\Controller\TravelController::travelAdd" type="service" id="service_locator.XmJoKHR"/>
-        <argument key="App\Controller\TravelController::travelHome" type="service" id="service_locator.gMOsWdV"/>
+        <argument key="App\Controller\TravelController::travelHome" type="service" id="service_locator.oyUChJC"/>
         <argument key="App\Controller\TravelController::travelParticipate" type="service" id="service_locator.XmJoKHR"/>
         <argument key="App\Controller\TravelController::travelRemove" type="service" id="service_locator.XmJoKHR"/>
         <argument key="App\Controller\TravelController::travelSearch" type="service" id="service_locator.XmJoKHR"/>
@@ -4483,9 +4505,10 @@
         <argument key="inline" type="service" id="fragment.renderer.inline"/>
       </argument>
     </service>
-    <service id="service_locator.c7yFyYZ" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id="service_locator.fWURASM" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
+        <argument key="App\Form\AlertType" type="service" id="App\Form\AlertType"/>
         <argument key="App\Form\CommentType" type="service" id="App\Form\CommentType"/>
         <argument key="App\Form\OffenseType" type="service" id="App\Form\OffenseType"/>
         <argument key="App\Form\PrivateMessagesType" type="service" id="App\Form\PrivateMessagesType"/>
@@ -4498,9 +4521,10 @@
         <argument key="Symfony\Component\Form\Extension\Core\Type\FormType" type="service" id="form.type.form"/>
       </argument>
     </service>
-    <service id="service_locator.gxw9HwO" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id="service_locator.TDBlvd6" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
+        <argument key="App\Repository\AlertRepository" type="service" id="App\Repository\AlertRepository"/>
         <argument key="App\Repository\CarRepository" type="service" id="App\Repository\CarRepository"/>
         <argument key="App\Repository\CommentRepository" type="service" id="App\Repository\CommentRepository"/>
         <argument key="App\Repository\PaymentRepository" type="service" id="App\Repository\PaymentRepository"/>

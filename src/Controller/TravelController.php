@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Alert;
 use App\Entity\Car;
 use App\Entity\Question;
 use App\Entity\Travel;
 use App\Entity\User;
+use App\Form\AlertType;
 use App\Form\TravelSearchType;
 use App\Form\TravelType;
 use DateTime;
@@ -27,10 +29,12 @@ class TravelController extends Controller
     public function travelAdd(EntityManagerInterface $em, $id)
     {
         $user = $this->getUser();
+
+
+
         // verification si l'user est identifier pour cette page
         if ($user) {
             $travel = $this->getDoctrine()->getRepository(Travel::class)->findOneBy(['id' => $id]);
-
             if ($travel != null) {
                 if ($travel->getPassengers()->contains($user)) {
                     $this->addFlash("warning", "Erreur: Vous faite déjà parti du trajet");
@@ -100,7 +104,7 @@ class TravelController extends Controller
     /**
      * @Route("/travel", name="travel_home")
      */
-    public function travelHome(Request $request, AuthenticationUtils $authenticationUtils, EntityManagerInterface $em)
+    public function travelHome(Request $request, AuthenticationUtils $authenticationUtils, EntityManagerInterface $em, \Swift_Mailer $mailer)
     {
         if ($this->getUser()) {
             // we get the actual user information
@@ -123,13 +127,53 @@ class TravelController extends Controller
 
             if ($travelForm->isSubmitted() &&
                 $travelForm->isValid() &&
-                $this->getUser()) {
+                $this->getUser()
+            ) {
                 $em->persist($travelForm->getData());
                 $em->flush();
 
+                $salut = $travelForm->getData();
+                $alertRepo = $this->getDoctrine()->getRepository(Alert::class);
+                $alerts = $alertRepo->findAlerts($travelForm->getData()->getStartcity() , $travelForm->getData()->getEndCity(), $travelForm->getData()->getStartHour());
+                for ($i = 0; $i < count($alerts) ; $i++) {
+
+                    var_dump($alerts[$i]->getUser()->getEmail());
+
+                    $message = (new \Swift_Message('Votre demande d\'alerte'))
+                        ->setFrom('dave.lopper0@gmail.com')
+                        ->setTo($user->getEmail());
+
+                    $data['image_src'] = $message->embed(\Swift_Image::fromPath('/var/www/html/papoteCar/public/pictures/default/logo.png'));
+
+                    $message->setBody(
+                        $this->renderView(
+                        // templates/emails/registration.html.twig
+                            'alert/emailAlert.html.twig',
+                            array('name' => $user->getUsername(),
+                                'image' => $data['image_src'],
+                            )
+                        ),
+                        'text/html'
+                    )/*
+                 * If you also want to include a plaintext version of the message
+                ->addPart(
+                    $this->renderView(
+                        'emails/registration.txt.twig',
+                        array('name' => $name)
+                    ),
+                    'text/plain'
+                )
+                */
+                    ;
+
+
+                    $mailer->send($message);
+                }
+
+
                 $this->addFlash("success", "Votre trajet a été ajouté");
                 // modifier ici pour mettre redirect vers user pannel
-                return $this->redirectToRoute('travel_home');
+                /*return $this->redirectToRoute('travel_home');*/
             }
 
             return $this->render('travel/index.html.twig', [
@@ -150,7 +194,8 @@ class TravelController extends Controller
      *     defaults={"page":"1"},
      *     requirements={"page":"[0-9]+"})
      */
-    public function travelSearch(EntityManagerInterface $em, Request $request, $villeDepart, $villeArrivee, $page) {
+    public function travelSearch(EntityManagerInterface $em, Request $request, $villeDepart, $villeArrivee, $page)
+    {
         $travelRepo = $this->getDoctrine()->getRepository(Travel::class);
 
         // a changer et a mettre dans les paramètres de la fonction
@@ -174,10 +219,42 @@ class TravelController extends Controller
         return $this->render("travel/search.twig", [
             "form" => $searchTravelForm->createView(),
             "travels" => $travels,
-            "nextPage" => $page+1,
-            "prevPage" => $page-1,
+            "nextPage" => $page + 1,
+            "prevPage" => $page - 1,
             "totalResults" => count($travels),
             "lastPage" => ceil(count($travels) / 50),
         ]);
+    }
+
+    /**
+     * @Route("/alertTravelRegister", name="alertTravelRegister")
+     */
+    public function alertTravelRegister(Request $request, EntityManagerInterface $em, \Swift_Mailer $mailer)
+    {
+        $alert = new Alert();
+        $alertForm = $this->createForm(AlertType::class, $alert);
+        $alertForm->handleRequest($request);
+
+
+        //check if form is valid
+        if ($alertForm->isSubmitted() && $alertForm->isValid()) {
+            $user = $this->getUser();
+            $alert->setUser($user);
+            $em->persist($alert);
+            $em->flush();
+
+            $this->addFlash('success', 'azy bravo ton alerte est enregistrée');
+            return $this->redirectToRoute('home');
+
+
+        } else {
+
+            $this->addFlash('danger', 'File must be .pnj or .jpeg');
+            return $this->render('alert/alertTravel.html.twig', [
+                "alertForm" => $alertForm->createView(),
+            ]);
+        }
+
+
     }
 }

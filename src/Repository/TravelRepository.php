@@ -36,6 +36,7 @@ class TravelRepository extends ServiceEntityRepository
         return new Paginator($query);
     }
 
+
 //    /**
 //     * @return Travel[] Returns an array of Travel objects
 //     */

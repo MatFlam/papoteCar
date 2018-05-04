@@ -139,7 +139,6 @@ class __TwigTemplate_323125b54da3afd9395c21a3f5a1ca5b4b0352a15b622f892df025a5123
             // line 20
             echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, $context["travel"], "price", array()), "html", null, true);
             echo " Euros</div><br>
-
         <hr>    ";
         }
         $_parent = $context['_parent'];
@@ -190,7 +189,6 @@ class __TwigTemplate_323125b54da3afd9395c21a3f5a1ca5b4b0352a15b622f892df025a5123
         -------<br>
         <div class=\"btn\"> Ville d'arrivée </div>:<div class=\"btn btn-1\">{{ travel.endaddress }} {{ travel.endcity }}</div><br>
         <div class=\"btn\"> Prix du trajet </div>:<div class=\"btn btn-1\">{{ travel.price }} Euros</div><br>
-
         <hr>    {% endfor %}
 {% endblock %}
 ", "travel/search.twig", "/var/www/html/papoteCar/templates/travel/search.twig");

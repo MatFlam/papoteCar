@@ -164,7 +164,14 @@ class __TwigTemplate_4c1d1c2cc59438cd88dbb4ae333fe8e5b16b6e0865ca8439b5d226b775e
                                 </button>
                             </a>
                     </div>
-
+                    <p>Créée une alert gros !</p>
+                    <a href=\"";
+        // line 76
+        echo $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("alertTravelRegister");
+        echo "\"><button type=\"button\" class=\"button-nav button-blue\" title=\"Créé une alerte\">
+                            <span>Créer une alerte!</span>
+                        </button>
+                    </a>
 
                 </div>
             </div>
@@ -250,7 +257,7 @@ class __TwigTemplate_4c1d1c2cc59438cd88dbb4ae333fe8e5b16b6e0865ca8439b5d226b775e
 
     public function getDebugInfo()
     {
-        return array (  161 => 70,  149 => 61,  135 => 49,  133 => 48,  130 => 46,  93 => 10,  84 => 9,  73 => 6,  64 => 5,  46 => 3,  15 => 1,);
+        return array (  170 => 76,  161 => 70,  149 => 61,  135 => 49,  133 => 48,  130 => 46,  93 => 10,  84 => 9,  73 => 6,  64 => 5,  46 => 3,  15 => 1,);
     }
 
     public function getSourceContext()
@@ -329,7 +336,11 @@ class __TwigTemplate_4c1d1c2cc59438cd88dbb4ae333fe8e5b16b6e0865ca8439b5d226b775e
                                 </button>
                             </a>
                     </div>
-
+                    <p>Créée une alert gros !</p>
+                    <a href=\"{{ path('alertTravelRegister') }}\"><button type=\"button\" class=\"button-nav button-blue\" title=\"Créé une alerte\">
+                            <span>Créer une alerte!</span>
+                        </button>
+                    </a>
 
                 </div>
             </div>

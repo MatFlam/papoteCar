@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Publier une annonce{% endblock %}
+{% block stylesheets %}
+
+{% endblock %}
+{% block main %}
+    PANNEAU GAUCHE<br>
+    telephone vérifié
+    email vérifié
+<br>
+    annonce publiée: {{ count }}
+    membre depuis le: {{ userInfos.datecreated|date }}
+    {% if car %}
+    véhicule: (brand) {{ car.brand }},  couleur: {{ car.color }}
+{% endif %}
+    <br>
+    prenom: {{ userInfos.name }} {{ userInfos.firstname|upper }}
+BLOCK INFORMATION<br>
+{% endblock %}

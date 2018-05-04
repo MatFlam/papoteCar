@@ -90,11 +90,17 @@ class Travel
      */
     private $questions;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Alert", mappedBy="travel")
+     */
+    private $alerts;
+
 
     public function __construct()
     {
         $this->passengers = new ArrayCollection();
         $this->questions = new ArrayCollection();
+        $this->alerts = new ArrayCollection();
     }
 
     public function getId()
@@ -298,6 +304,37 @@ class Travel
             // set the owning side to null (unless already changed)
             if ($question->getTravel() === $this) {
                 $question->setTravel(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Alert[]
+     */
+    public function getAlerts(): Collection
+    {
+        return $this->alerts;
+    }
+
+    public function addAlert(Alert $alert): self
+    {
+        if (!$this->alerts->contains($alert)) {
+            $this->alerts[] = $alert;
+            $alert->setTravel($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAlert(Alert $alert): self
+    {
+        if ($this->alerts->contains($alert)) {
+            $this->alerts->removeElement($alert);
+            // set the owning side to null (unless already changed)
+            if ($alert->getTravel() === $this) {
+                $alert->setTravel(null);
             }
         }
 

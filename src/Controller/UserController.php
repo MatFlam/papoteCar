@@ -60,9 +60,7 @@ class UserController extends Controller
 
             //Create a "unique" token.
             $token = bin2hex(openssl_random_pseudo_bytes(16));
-
             $user->setToken($token);
-
 
             $em->persist($user);
             $em->flush();
@@ -196,11 +194,11 @@ class UserController extends Controller
     public function profilUser(EntityManagerInterface $em, $id)
     {
         $user = $this->getUser();
-        $travel = $this->getDoctrine()->getRepository(Travel::class)->findBy(["userid" => $id]);
+        $travel = $this->getDoctrine()->getRepository(Travel::class)->findBy(["user" => $id]);
         $userInfos = $this->getDoctrine()->getRepository(User::class)->findOneBy(["id" => $id]);
         // voir pourquoi il n'y a que la table travel qui contient un lien vers car/user pour savoir a qui
         // appartient la voiture...
-        $userCarInfos = $this->getDoctrine()->getRepository(Travel::class)->findOneBy(["carid" => $id]);
+        $userCarInfos = $this->getDoctrine()->getRepository(Travel::class)->findOneBy(["car" => $id]);
 
         $count = 0;
         foreach ($travel as $nb) {

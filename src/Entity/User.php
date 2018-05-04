@@ -88,6 +88,10 @@ class User implements UserInterface
      */
     private $token;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Alert", mappedBy="user")
+     */
+    private $alerts;
 
 
     public function __construct()
@@ -95,6 +99,7 @@ class User implements UserInterface
         $this->travels = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->questions = new ArrayCollection();
+        $this->alerts = new ArrayCollection();
     }
 
     public function getId()
@@ -337,5 +342,37 @@ class User implements UserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection|Alert[]
+     */
+    public function getAlerts(): Collection
+    {
+        return $this->alerts;
+    }
+
+    public function addAlert(Alert $alert): self
+    {
+        if (!$this->alerts->contains($alert)) {
+            $this->alerts[] = $alert;
+            $alert->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAlert(Alert $alert): self
+    {
+        if ($this->alerts->contains($alert)) {
+            $this->alerts->removeElement($alert);
+            // set the owning side to null (unless already changed)
+            if ($alert->getUser() === $this) {
+                $alert->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
 
 }

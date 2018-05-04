@@ -114,6 +114,11 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
             return array (  '_controller' => 'App\\Controller\\UserController::tokenCheck',  '_route' => 'tokenCheck',);
         }
 
+        // alertTravelRegister
+        if ('/alertTravelRegister' === $pathinfo) {
+            return array (  '_controller' => 'App\\Controller\\TravelController::alertTravelRegister',  '_route' => 'alertTravelRegister',);
+        }
+
         // registerUser
         if ('/registerUser' === $pathinfo) {
             return array (  '_controller' => 'App\\Controller\\UserController::registerUser',  '_route' => 'registerUser',);
